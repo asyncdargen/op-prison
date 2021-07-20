@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.redline'
+version '1.0'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://repo.dmulloy2.net/repository/public/' }
+    maven { url 'https://jitpack.io' }
+    maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    //Lombok for beast and readable code ;d
+    compile 'org.projectlombok:lombok:1.18.10'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    //Plugin base dependency
+    compile 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    compile 'org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT'
+    compile 'org.spigotmc:plugin-annotations:1.2.3-SNAPSHOT'
+    compile 'net.md-5:bungeecord-api:1.15-SNAPSHOT'
+    annotationProcessor 'org.spigotmc:plugin-annotations:1.2.3-SNAPSHOT'
+    //Other dependency
+    compile 'com.comphenix.protocol:ProtocolLib:4.5.0'
+    compile fileTree(dir: 'libs', includes: ['*.jar'])
+    compile 'com.zaxxer:HikariCP:3.3.1'
+    compile 'commons-dbutils:commons-dbutils:1.7'
+}
+
+tasks.withType(JavaCompile)*.options*.encoding = 'UTF-8'
