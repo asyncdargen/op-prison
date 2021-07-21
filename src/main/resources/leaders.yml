@@ -1,0 +1,9 @@
+leaderboards:
+  BLOCKS:
+    title: "&aТоп &c10&a игроков по &6Блокам"
+    format: "%s#%s&7 | &f%s &7- &6%s"
+    location: "world 100 100 100"
+  PRESTIGE:
+    title: "&aТоп &c10&a игроков по &cПрестижу"
+    format: "%s#%s&7 | &f%s &7- &c%s"
+    location: "world 100 100 100"

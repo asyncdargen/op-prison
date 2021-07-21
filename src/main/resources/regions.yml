@@ -1,0 +1,16 @@
+regions:
+  dirt:
+    world: world
+    weight: 0
+    min: 100 100 100
+    max: 120 120 120
+    parameters: ["use:false"]
+global:
+  weight: 0
+  parameters: ["block-break:false"]
+mines:
+  dirt:
+    update: 10 #in seconds
+    regions: ['dirt']
+    content: ['1:0:34', 'STONE:0:90']
+    upperContent: '1:0'
