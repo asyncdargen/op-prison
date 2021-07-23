@@ -6,7 +6,7 @@ import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import ru.redline.opprison.region.point.PointPos;
+import ru.redline.opprison.region.math.V3;
 
 import java.util.List;
 import java.util.Map;
@@ -18,8 +18,7 @@ public class Region implements Comparable<Region> {
 
     private final String id;
     private final int weight;
-    private final PointPos min;
-    private final PointPos max;
+    private final V3 min, max;
     private final World world;
     private final Map<RegionParameter, Boolean> parameters;
 
@@ -31,7 +30,7 @@ public class Region implements Comparable<Region> {
         parameters.put(parameter, state);
     }
 
-    public boolean inRegion(PointPos check, World world) {
+    public boolean inRegion(V3 check, World world) {
         return world.equals(this.world) &&
                 min.getX() <= check.getX() && check.getX() <= max.getX() &&
                 min.getY() <= check.getY() && check.getY() <= max.getY() &&
@@ -40,7 +39,7 @@ public class Region implements Comparable<Region> {
 
     public boolean inRegion(Player player) {
         val loc = player.getLocation();
-        return inRegion(PointPos.builder().x(loc.getBlockX()).y(loc.getBlockY()).z(loc.getBlockZ()).build(), loc.getWorld());
+        return inRegion(new V3(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), loc.getWorld());
     }
 
     public List<Player> getPlayers() {
@@ -48,6 +47,6 @@ public class Region implements Comparable<Region> {
     }
 
     public int compareTo(Region rg) {
-        return (rg.weight < weight) ? -1 : ((weight == rg.weight) ? 0 : 1);
+        return Integer.compare(rg.weight, weight);
     }
 }

@@ -2,9 +2,9 @@ package ru.redline.opprison.region;
 
 import lombok.val;
 import org.bukkit.Bukkit;
+import ru.redline.opprison.region.math.V3;
 import ru.redline.opprison.region.mine.Mine;
 import ru.redline.opprison.region.mine.ResourceBlock;
-import ru.redline.opprison.region.point.PointPos;
 import ru.redline.opprison.utils.Configuration;
 
 import java.util.ArrayList;
@@ -12,7 +12,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class RegionConfig extends Configuration {
 
@@ -24,9 +25,7 @@ public class RegionConfig extends Configuration {
 
     public void onLoad() {
         val regions = new ArrayList<Region>();
-        val regionsSection = getConfigurationSection("regions");
-        long start = System.currentTimeMillis();
-        System.out.println("§7Loading regions...");
+        val regionsSection= getConfigurationSection("regions");
         regionsSection.getKeys(false).forEach(n -> {
             val cs = regionsSection.getConfigurationSection(n);
             int minX, minY, minZ, maxX, maxY, maxZ;
@@ -49,17 +48,14 @@ public class RegionConfig extends Configuration {
             val params = cs.getStringList("parameters");
             if (world == null) return;
             val parameters = RegionParameter.fromList(params);
-            regions.add(Region.builder().id(n.toLowerCase()).parameters(parameters).world(world).weight(weight).max(
-                    PointPos.builder().x(max(minX, maxX)).y(max(minY, maxY)).z(max(minZ, maxZ)).build()).min(
-                    PointPos.builder().x(min(minX, maxX)).y(min(minY, maxY)).z(min(minZ, maxZ)).build()).build());
+            regions.add(Region.builder().id(n.toLowerCase()).parameters(parameters).world(world).weight(weight)
+                    .max(new V3(max(minX, maxX), max(minY, maxY), max(minZ, maxZ)))
+                    .min(new V3(min(minX, maxX), min(minY, maxY), min(minZ, maxZ))).build());
         });
         regions.add(new GlobalRegion(getInt("global.weight"), RegionParameter.fromList(getStringList("global.parameters"))));
         manager.clearRegions();
         manager.addRegions(regions);
-        System.out.println("§7Loaded " + regions.size() + " regions! §2Took " + (System.currentTimeMillis() - start) + "ms");
 
-        System.out.println("§7Loading mines...");
-        start = System.currentTimeMillis();
         val mines = new ArrayList<Mine>();
         val minesSection = getConfigurationSection("mines");
         minesSection.getKeys(false).forEach(n -> {
@@ -73,8 +69,7 @@ public class RegionConfig extends Configuration {
 
             mines.add(Mine.builder().id(n.toLowerCase()).regions(mineRegions).content(content).upperContent(upperContent).update(update).build());
         });
-        manager.getMINES().clearMines();
-        manager.getMINES().addMines(mines);
-        System.out.println("§7Loaded " + mines.size() + " mines! §2Took " + (System.currentTimeMillis() - start) + "ms");
+        manager.getMines().clearMines();
+        manager.getMines().addMines(mines);
     }
 }

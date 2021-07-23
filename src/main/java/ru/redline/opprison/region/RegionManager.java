@@ -6,7 +6,7 @@ import lombok.val;
 import org.bukkit.Location;
 import ru.redline.core.bukkit.CorePlugin;
 import ru.redline.opprison.region.mine.MineManager;
-import ru.redline.opprison.region.point.PointPos;
+import ru.redline.opprison.region.math.V3;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,18 +16,18 @@ import java.util.stream.Collectors;
 @Getter
 public class RegionManager {
 
-    private final RegionGuard GUARD;
-    private final RegionConfig CONFIG;
-    private final MineManager MINES;
+    private final RegionGuard guard;
+    private final RegionConfig config;
+    private final MineManager mines;
 
     @Getter
     private final Set<Region> regions = new ConcurrentSet<>();
 
     public RegionManager(CorePlugin plugin) {
-        GUARD = new RegionGuard(plugin, this);
-        MINES = new MineManager();
+        guard = new RegionGuard(plugin, this);
+        mines = new MineManager();
         RegionConfig.manager = this;
-        CONFIG = new RegionConfig();
+        config = new RegionConfig();
     }
 
     public void clearRegions() {
@@ -50,7 +50,7 @@ public class RegionManager {
     }
 
     public List<Region> getContainRegions(Location loc) {
-        val point = PointPos.builder().x(loc.getBlockX()).z(loc.getBlockZ()).y(loc.getBlockY()).build();
+        val point = new V3(loc.getBlockX(), loc.getBlockZ(), loc.getBlockY());
         return regions.stream().filter(r -> r.inRegion(point, loc.getWorld())).sorted().collect(Collectors.toList());
     }
 

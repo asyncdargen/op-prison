@@ -41,13 +41,13 @@ public class MineCommand extends BukkitMegaCommand<CommandSender> {
     @CommandArgument(aliases = {"list", "список", "l"})
     public void list(CommandSender commandSender, String... args) {
         OpPrison.send(commandSender, "Список шахт &7- &a%s",
-                OpPrison.instance.getRegionManager().getMINES().getMines().stream().map(Mine::getId).collect(Collectors.joining("&7, &a")));
+                OpPrison.instance.getRegionManager().getMines().getMines().stream().map(Mine::getId).collect(Collectors.joining("&7, &a")));
     }
 
     @CommandArgument(aliases = {"fill", "заполнить", "f"})
     public void fill(CommandSender commandSender, String... args) {
         Mine m;
-        if (args.length >= 1 && (m = OpPrison.instance.getRegionManager().getMINES().byId(args[0].toLowerCase())) != null) {
+        if (args.length >= 1 && (m = OpPrison.instance.getRegionManager().getMines().byId(args[0].toLowerCase())) != null) {
             m.fillAll();
             OpPrison.send(commandSender, "Шахта &a%s&r перезагружена", m.getId());
         } else if (args.length < 1) OpPrison.send(commandSender, "Укажите название шахты");
@@ -57,7 +57,7 @@ public class MineCommand extends BukkitMegaCommand<CommandSender> {
     @CommandArgument(aliases = {"update", "обновить", "u"})
     public void update(CommandSender commandSender, String... args) {
         Mine m;
-        if (args.length >= 1 && (m = OpPrison.instance.getRegionManager().getMINES().byId(args[0].toLowerCase())) != null) {
+        if (args.length >= 1 && (m = OpPrison.instance.getRegionManager().getMines().byId(args[0].toLowerCase())) != null) {
             m.fillAll();
             OpPrison.send(commandSender, "Шахта &a%s&r заполнена", m.getId());
         } else if (args.length < 1) OpPrison.send(commandSender, "Укажите название шахты");
